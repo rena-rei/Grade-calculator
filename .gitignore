@@ -1,4 +1,4 @@
-# Python
+
 __pycache__/
 *.pyc
 *.pyo
@@ -6,15 +6,15 @@ __pycache__/
 venv/
 env/
 
-# OS/editor junk
+
 desktop.ini
 Thumbs.db
 
-# Builds / binaries
+
 dist/
 build/
 *.exe
 
-# Large office files (avoid pushing by accident)
+
 *.docx
 *.xlsx
