@@ -1,0 +1,40 @@
+name: Build macOS binary
+
+on:
+  push:
+    tags:
+      - 'v*'            # runs when you push a tag like v1.0.0
+  workflow_dispatch: {}  # allow manual runs from the Actions tab
+
+permissions:
+  contents: write        # needed to upload to Releases
+
+jobs:
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install PyInstaller
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyinstaller
+
+      - name: Build CLI app
+        run: |
+          pyinstaller --onefile --name GradeCalculator GradeCalculator.py
+          cd dist
+          tar -czf GradeCalculator-mac.tar.gz GradeCalculator
+
+      - name: Upload artifact to the Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/GradeCalculator-mac.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
